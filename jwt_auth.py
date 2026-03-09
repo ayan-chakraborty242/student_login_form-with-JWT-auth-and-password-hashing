@@ -102,19 +102,19 @@ def submit_form(request: Request,
                 roll: int = Form(...),
                 password: str = Form(...)):
     conn = get_connection()
-    cursor = conn.cursor(dictionary=True)      # ✅ একটাই dictionary cursor
+    cursor = conn.cursor(dictionary=True)      # ✅ 
     cursor.execute("SELECT * FROM students WHERE roll=%s", (roll,))
     student = cursor.fetchone()
     cursor.close()
     conn.close()
 
     if student and verify_password(password, student["password"]):
-        token = create_token(roll)             # ✅ token বানাও
+        token = create_token(roll)             # ✅ 
         response = templates.TemplateResponse(
             "show.html",
             {"request": request, "name": student["name"]}
         )
-        response.set_cookie(key="access_token", value=token, httponly=True)  # ✅ cookie তে রাখো
+        response.set_cookie(key="access_token", value=token, httponly=True)  # ✅    
         return response
     else:
         return templates.TemplateResponse(
@@ -138,5 +138,6 @@ def show(request: Request):
     student = cursor.fetchone()
     cursor.close()
     conn.close()
+
 
     return templates.TemplateResponse("show.html", {"request": request, "name": student["name"]})
